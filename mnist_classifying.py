@@ -7,21 +7,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix, accuracy_score
 
-(trainX, trainY), (testX, testY) = mnist.load_data()
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 #reshape
-trainX = trainX.reshape((trainX.shape[0], 28, 28, 1))
-testX = testX.reshape((testX.shape[0], 28, 28, 1))
+x_train = x_train.reshape((x_train.shape[0], 28, 28, 1))
+x_test = x_test.reshape((x_test.shape[0], 28, 28, 1))
 
 #onehot encoding
-trainY = to_categorical(trainY, num_classes=10)
-testY = to_categorical(testY, num_classes=10)
+y_train = to_categorical(y_train, num_classes=10)
+y_test = to_categorical(y_test, num_classes=10)
 
 #normalising pixels
-trainX = np.array(trainX, dtype='float64')
-testX = np.array(testX, dtype='float64')
-trainX/=255
-testX/=255
+x_train = np.array(x_train, dtype='float64')
+x_test = np.array(x_test, dtype='float64')
+x_train/=255
+x_test/=255
 
 #I used this mode in a previous assignment in University
 model = Sequential()
@@ -35,14 +35,14 @@ model.add(Dense(10, activation='softmax'))
 model.compile(optimizer='Adam',loss='categorical_crossentropy', metrics=['accuracy'])
 
 #fitting the model and then plotting it
-history = model.fit(trainX, trainY, batch_size=32, epochs=10, validation_split=0.1)
+history = model.fit(x_train, y_train, batch_size=32, epochs=10, validation_split=0.1)
 plt.figure()
 plt.plot(history.history['loss'])
 plt.grid()
 
 #predictions
-predY = np.argmax(model.predict(testX), axis=-1)
+predY = np.argmax(model.predict(x_test), axis=-1)
 
 #metrics calculated here
-cm = confusion_matrix(np.argmax(testY, axis=1), predY)
-acc = 100*accuracy_score(testY, to_categorical(predY, num_classes=10))
+cm = confusion_matrix(np.argmax(y_test, axis=1), predY)
+acc = 100*accuracy_score(y_test, to_categorical(predY, num_classes=10))
