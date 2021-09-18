@@ -25,6 +25,7 @@ for i in range(1, data.shape[1]-1):
   
 plt.figure()
 plt.semilogx(variances)
-plt.xlabel("Features")
+plt.xlabel("Components")
 plt.ylabel("Explained Variance in %")
 plt.grid()
+plt.title("Explained Variance in % for PCAs with different amounts of components")
